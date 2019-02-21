@@ -23,7 +23,6 @@ public class ws_script : MonoBehaviour
 		while (true) {
 			string reply = w.RecvString ();
 			if (reply != null) {
-				Debug.Log (reply);
                 string str = reply.ToString();
                 moveData = JsonConvert.DeserializeObject<MoveData>(str);
                 if (GameObject.Find(moveData.id))
