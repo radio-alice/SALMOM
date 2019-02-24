@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using System.Linq;
 using System;
 using Newtonsoft.Json;
 using Random = UnityEngine.Random;
@@ -10,39 +10,39 @@ public class ws_script : MonoBehaviour
 {
     public GameObject player;
     public int NetworkSpeed = 5;
-	public string ip = "localhost";
-	public string port = "8000";
+	public string url;
 
     private MoveData moveData;
+    private List<GameObject> players = new List<GameObject>();
 
 	IEnumerator Start ()
 	{
-		WebSocket w = new WebSocket (new Uri ("ws://" + ip + ":" + port));
+		WebSocket w = new WebSocket (new Uri (url));
 		yield return StartCoroutine (w.Connect ());
 
 		while (true) {
 			string reply = w.RecvString ();
 			if (reply != null) {
-                string str = reply.ToString();
-                moveData = JsonConvert.DeserializeObject<MoveData>(str);
-                if (GameObject.Find(moveData.id))
+                Debug.Log(reply);
+                moveData = JsonConvert.DeserializeObject<MoveData>(reply);
+
+                if (players.Any(obj => obj.name == moveData.id))
                 {
                     //the player exists
-                    GameObject.Find(moveData.id).GetComponent<PlayerController>().Move(StringToVector3(moveData.position));
+                    players.SingleOrDefault(obj => obj.name == moveData.id)
+                           .GetComponent<PlayerController>()
+                           .Move(StringToVector3(moveData.position));
                 }
-                else
+                else if (moveData.position == "START")
                 {
-                    //the player does not exist we must instantiate it
-                    if (moveData.position == "START")
-                    {
-                        //checking if it is START if so we don't need to do anything
-                        Debug.Log("START");
-                        //instantiating the player
-                        var newPlayer = Instantiate(player, 
-                            new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0), Quaternion.identity);
-                        //renaming them
-                        newPlayer.name = moveData.id;
-                    }
+                    //checking if it is START if so we don't need to do anything
+                    Debug.Log("START");
+                    //instantiating the player
+                    var newPlayer = Instantiate(player, 
+                        new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0), Quaternion.identity);
+                    //renaming them
+                    newPlayer.name = moveData.id;
+                    players.Add(newPlayer);
                 }
             }
 			if (w.error != null) {

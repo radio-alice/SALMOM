@@ -157,8 +157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 2845911177171960340, guid: e12843d5d55a94859bfbcad710fa6cb8, type: 3}
   NetworkSpeed: 5
-  ip: localhost
-  port: 8080
+  url: wss://shrmn.toys/salmom
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
