@@ -11,22 +11,26 @@ public class ws_script : MonoBehaviour
     public GameObject player;
     public int NetworkSpeed = 5;
 	public string url;
-
+    public static ws_script self;
+    public Boolean open = true;
     private MoveData moveData;
     private List<GameObject> players = new List<GameObject>();
+    private WebSocket w;
 
-	IEnumerator Start ()
-	{
-		WebSocket w = new WebSocket (new Uri (url));
-		yield return StartCoroutine (w.Connect ());
+    IEnumerator Start()
+    {
+        w = new WebSocket(new Uri(url));
+        yield return StartCoroutine(w.Connect());
 
         // mark game connection with "game", will use second number for player id, 
         // third for selecting which sprite to use
         w.SendString("gameInit_na_na");
 
-		while (true) {
-			string reply = w.RecvString ();
-			if (reply != null) {
+        while (open)
+        {
+            string reply = w.RecvString();
+            if (reply != null)
+            {
                 moveData = JsonConvert.DeserializeObject<MoveData>(reply);
 
                 if (players.Any(obj => obj.name == moveData.id))
@@ -41,7 +45,7 @@ public class ws_script : MonoBehaviour
                     }
                     //else move player as specified
                     else
-                    { 
+                    {
                         currentPlayer.GetComponent<PlayerController>()
                                      .Move(StringToVector3(moveData.position));
                     }
@@ -49,22 +53,29 @@ public class ws_script : MonoBehaviour
                 else if (moveData.position == "START")
                 {
                     //instantiating the player
-                    var newPlayer = Instantiate(player, 
+                    var newPlayer = Instantiate(player,
                         new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0), Quaternion.identity);
                     //renaming them
                     newPlayer.name = moveData.id;
                     players.Add(newPlayer);
-                    w.SendString("game_"+moveData.id+"_You Started!");
+                    w.SendString("game_" + moveData.id + "_You Started!");
                 }
             }
-			if (w.error != null) {
-				Debug.LogError ("Error: " + w.error);
-				break;
-			}
-			yield return 0;
-		}
-		w.Close ();
-	}
+            if (w.error != null)
+            {
+                Debug.LogError("Error: " + w.error);
+                break;
+            }
+
+            yield return 0;
+        }
+        w.Close();
+    }
+
+    private void OnApplicationQuit()
+    {
+        w.Close();
+    }
 
     public static Vector3 StringToVector3(string sVector)
     {
