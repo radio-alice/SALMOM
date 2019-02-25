@@ -27,17 +27,19 @@ public class ws_script : MonoBehaviour
 		while (true) {
 			string reply = w.RecvString ();
 			if (reply != null) {
-                Debug.Log(reply);
                 moveData = JsonConvert.DeserializeObject<MoveData>(reply);
 
                 if (players.Any(obj => obj.name == moveData.id))
                 {
                     //the player exists
                     var currentPlayer = players.SingleOrDefault(obj => obj.name == moveData.id);
+
+                    //if socket was closed, remove player
                     if (moveData.position == "close")
                     {
                         currentPlayer.SetActive(false);
                     }
+                    //else move player as specified
                     else
                     { 
                         currentPlayer.GetComponent<PlayerController>()
@@ -46,8 +48,6 @@ public class ws_script : MonoBehaviour
                 }
                 else if (moveData.position == "START")
                 {
-                    //checking if it is START if so we don't need to do anything
-                    Debug.Log("START");
                     //instantiating the player
                     var newPlayer = Instantiate(player, 
                         new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0), Quaternion.identity);
