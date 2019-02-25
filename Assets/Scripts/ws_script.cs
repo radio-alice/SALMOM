@@ -20,6 +20,9 @@ public class ws_script : MonoBehaviour
 		WebSocket w = new WebSocket (new Uri (url));
 		yield return StartCoroutine (w.Connect ());
 
+        // mark hosts with "HOST", will use second number for specifying sprite to return
+        w.SendString("gameInit_na_na");
+
 		while (true) {
 			string reply = w.RecvString ();
 			if (reply != null) {
@@ -43,6 +46,7 @@ public class ws_script : MonoBehaviour
                     //renaming them
                     newPlayer.name = moveData.id;
                     players.Add(newPlayer);
+                    w.SendString("game_"+moveData.id+"_na");
                 }
             }
 			if (w.error != null) {
