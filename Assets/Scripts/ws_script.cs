@@ -20,7 +20,8 @@ public class ws_script : MonoBehaviour
 		WebSocket w = new WebSocket (new Uri (url));
 		yield return StartCoroutine (w.Connect ());
 
-        // mark hosts with "HOST", will use second number for specifying sprite to return
+        // mark game connection with "game", will use second number for player id, 
+        // third for selecting which sprite to use
         w.SendString("gameInit_na_na");
 
 		while (true) {
@@ -32,9 +33,16 @@ public class ws_script : MonoBehaviour
                 if (players.Any(obj => obj.name == moveData.id))
                 {
                     //the player exists
-                    players.SingleOrDefault(obj => obj.name == moveData.id)
-                           .GetComponent<PlayerController>()
-                           .Move(StringToVector3(moveData.position));
+                    var currentPlayer = players.SingleOrDefault(obj => obj.name == moveData.id);
+                    if (moveData.position == "close")
+                    {
+                        currentPlayer.SetActive(false);
+                    }
+                    else
+                    { 
+                        currentPlayer.GetComponent<PlayerController>()
+                                     .Move(StringToVector3(moveData.position));
+                    }
                 }
                 else if (moveData.position == "START")
                 {
@@ -46,7 +54,7 @@ public class ws_script : MonoBehaviour
                     //renaming them
                     newPlayer.name = moveData.id;
                     players.Add(newPlayer);
-                    w.SendString("game_"+moveData.id+"_na");
+                    w.SendString("game_"+moveData.id+"_You Started!");
                 }
             }
 			if (w.error != null) {
@@ -60,12 +68,6 @@ public class ws_script : MonoBehaviour
 
     public static Vector3 StringToVector3(string sVector)
     {
-        // Remove the parentheses
-        if (sVector.StartsWith("(") && sVector.EndsWith(")"))
-        {
-            sVector = sVector.Substring(1, sVector.Length - 2);
-        }
-
         // split the items
         string[] sArray = sVector.Split(',');
 
