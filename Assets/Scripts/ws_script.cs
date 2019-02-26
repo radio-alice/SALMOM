@@ -53,7 +53,7 @@ public class ws_script : MonoBehaviour
                 {
                     //instantiating the player
                     var newPlayer = Instantiate(player,
-                        new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0), 
+                        new Vector3(Random.Range(-28.0f, 28.0f), Random.Range(-14.0f, 14.0f), 0), 
                                                 Quaternion.identity);
                     //renaming them
                     newPlayer.name = moveData.id;
