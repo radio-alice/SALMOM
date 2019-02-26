@@ -8,10 +8,14 @@ public class PlayerController : MonoBehaviour
     public float maxX;
     public float maxY;
     SpriteRenderer spriteR;
+    int turn;
 
     private void Awake()
     {
+        turn = Random.Range(0, 1);
         spriteR = GetComponent<SpriteRenderer>();
+        transform.eulerAngles = new Vector3(0, 0, (-90 * turn) + 45);
+        if (turn == 0) turn = -1;
     }
     public void AttachSprite(string file) {
         file = file.Substring(0, file.Length - 4);
@@ -26,6 +30,8 @@ public class PlayerController : MonoBehaviour
         if (transform.position.y >= maxY) moveData.y = -1;
         if (transform.position.y <= (-1 * (maxY - .1))) moveData.y = 1;
         transform.Translate(moveData.normalized * moveAmt);
+        transform.eulerAngles += new Vector3(0, 0, turn * 90);
+        turn *= -1;
     }
 
 }
