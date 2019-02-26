@@ -32,7 +32,6 @@ public class ws_script : MonoBehaviour
             if (reply != null)
             {
                 moveData = JsonConvert.DeserializeObject<MoveData>(reply);
-
                 if (players.Any(obj => obj.name == moveData.id))
                 {
                     //the player exists
@@ -54,11 +53,12 @@ public class ws_script : MonoBehaviour
                 {
                     //instantiating the player
                     var newPlayer = Instantiate(player,
-                        new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0), Quaternion.identity);
+                        new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0), 
+                                                Quaternion.identity);
                     //renaming them
                     newPlayer.name = moveData.id;
+                    newPlayer.GetComponent<PlayerController>().AttachSprite(moveData.sprite);
                     players.Add(newPlayer);
-                    w.SendString("game_" + moveData.id + "_You Started!");
                 }
             }
             if (w.error != null)
@@ -96,4 +96,5 @@ public class MoveData
 {
     public string id;
     public string position;
+    public string sprite;
 };

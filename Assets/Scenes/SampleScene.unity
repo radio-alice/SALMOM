@@ -158,6 +158,7 @@ MonoBehaviour:
   player: {fileID: 2845911177171960340, guid: e12843d5d55a94859bfbcad710fa6cb8, type: 3}
   NetworkSpeed: 5
   url: wss://shrmn.toys/salmom
+  open: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -194,7 +195,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.45882356, g: 0.50980395, b: 0.69803923, a: 0}
+  m_BackGroundColor: {r: 1, g: 0.33490568, b: 0.84031916, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -210,7 +211,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 1
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
