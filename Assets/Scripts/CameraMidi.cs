@@ -15,6 +15,7 @@ public class CameraMidi : MonoBehaviour
     Slitscan slitscan;
     Voronoi voronoi;
     List<MonoBehaviour> fx;
+    int currentNote;
 
     void Start()
     {
@@ -37,6 +38,7 @@ public class CameraMidi : MonoBehaviour
     void NoteOn(MidiChannel channel, int note, float velocity)
     {
         fx[note].enabled = true;
+        currentNote = note;
     }
 
     void NoteOff(MidiChannel channel, int note)
