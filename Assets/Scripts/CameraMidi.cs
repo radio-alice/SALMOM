@@ -9,11 +9,8 @@ public class CameraMidi : MonoBehaviour
     AnalogGlitch analog;
     Binary binary;
     DigitalGlitch digital;
-    Feedback feedback;
-    Datamosh datamosh;
     Mirror mirror;
-    Slitscan slitscan;
-    Voronoi voronoi;
+ 
     List<MonoBehaviour> fx;
     int currentNote;
 
@@ -21,35 +18,25 @@ public class CameraMidi : MonoBehaviour
     {
         analog = GetComponent<AnalogGlitch>();
         binary = GetComponent<Binary>();
-        digital = GetComponent<DigitalGlitch>();
-        feedback = GetComponent<Feedback>();
-        datamosh = GetComponent<Datamosh>();
+        digital = GetComponent<DigitalGlitch>();        
         mirror = GetComponent<Mirror>();
-        slitscan = GetComponent<Slitscan>();
-        voronoi = GetComponent<Voronoi>();
+
         fx = new List<MonoBehaviour>() 
-            { binary, analog, feedback, datamosh, mirror, slitscan, voronoi, digital };
+            { binary, analog, mirror, digital };
 
         MidiMaster.noteOnDelegate += NoteOn;
         MidiMaster.noteOffDelegate += NoteOff;
-        MidiMaster.knobDelegate += Knob;
-
         Screen.fullScreen = true;
     }
 
     void NoteOn(MidiChannel channel, int note, float velocity)
     {
-        fx[note].enabled = true;
+        if (fx[note] != null) fx[note].enabled = true;
         currentNote = note;
     }
 
     void NoteOff(MidiChannel channel, int note)
     {
-        fx[note].enabled = false;
-    }
-
-    void Knob(MidiChannel channel, int knobNumber, float knobValue)
-    {
-        //Debug.Log("Knob: " + knobNumber + "," + knobValue);
+        if (fx[note] != null) fx[note].enabled = false;
     }
 }
