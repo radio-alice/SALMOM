@@ -33,6 +33,8 @@ public class CameraMidi : MonoBehaviour
         MidiMaster.noteOnDelegate += NoteOn;
         MidiMaster.noteOffDelegate += NoteOff;
         MidiMaster.knobDelegate += Knob;
+
+        Screen.fullScreen = true;
     }
 
     void NoteOn(MidiChannel channel, int note, float velocity)
@@ -48,6 +50,6 @@ public class CameraMidi : MonoBehaviour
 
     void Knob(MidiChannel channel, int knobNumber, float knobValue)
     {
-        Debug.Log("Knob: " + knobNumber + "," + knobValue);
+        //Debug.Log("Knob: " + knobNumber + "," + knobValue);
     }
 }
