@@ -32,16 +32,16 @@ namespace Kino
         #region Public Properties
 
         [SerializeField]
-        int _repeat;
+        public int _repeat;
 
         [SerializeField]
-        float _offset;
+        public float _offset;
 
         [SerializeField]
-        float _roll;
+        public float _roll;
 
         [SerializeField]
-        bool _symmetry;
+        public bool _symmetry;
 
         #endregion
 

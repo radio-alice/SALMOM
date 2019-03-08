@@ -92,6 +92,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf72b839b164f4afaa290fe27f663756, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveAmt: 1
-  maxX: 28
-  maxY: 14
+  moveAmt: 3
+  maxX: 25
+  maxY: 13
