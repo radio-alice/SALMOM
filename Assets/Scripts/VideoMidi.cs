@@ -12,6 +12,10 @@ public class VideoMidi : MonoBehaviour
 
     void Start()
     {
+     
+        VideoPlayer video;
+        video = GetComponent<VideoPlayer>();
+
         MidiMaster.noteOnDelegate += NoteOn;
     }
 
@@ -23,4 +27,5 @@ public class VideoMidi : MonoBehaviour
             video.SetActive(!video.activeInHierarchy);
         }
     }
+
 }

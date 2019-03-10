@@ -37,4 +37,8 @@ sysinfo.txt
 *.app
 
 #DS_Store
-*.DS_Store
+.DS_Store
+
+#big videos
+*.mov
+*.mp4
